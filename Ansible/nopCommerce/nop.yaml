@@ -3,6 +3,10 @@
   hosts: app
   become: yes
   tasks:
+    - name: bail out if running on unsupported os
+      ansible.builtin.fail:
+        msg: "This playbook supports only ubuntu"
+      when: ansible_facts['distribution'] != 'Ubuntu'
     - name: install dotnet sdk and other packages
       ansible.builtin.apt:
         name: "{{ item }}"
